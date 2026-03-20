@@ -38,6 +38,7 @@ nav {
   padding: 0 1.25rem;
   height: 60px;
   background: rgba(250,250,248,0.96);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
 }
@@ -90,6 +91,7 @@ nav {
   inset: 60px 0 0 0;
   z-index: 199;
   background: rgba(250,250,248,0.98);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(12px);
   display: flex;
   flex-direction: column;
@@ -167,6 +169,7 @@ nav {
   font-weight: 300;
   color: transparent;
   -webkit-text-stroke: 1px var(--line);
+  -webkit-user-select: none;
   user-select: none;
   pointer-events: none;
   line-height: 1;
@@ -437,6 +440,11 @@ nav {
   transition: transform 0.3s, color 0.25s;
   flex-shrink: 0;
 }
+
+.clink-arrow-static {
+  opacity: 0.15;
+}
+
 .clink:hover .clink-arrow { transform: translateX(5px); color: var(--gold); }
 
 /* ── FOOTER ── */
@@ -739,7 +747,7 @@ footer {
         </div>
         <span class="clink-arrow">→</span>
       </a>
-      <a href="https://x.com/choromba" target="_blank" class="clink">
+      <a href="https://x.com/choromba" target="_blank" rel="noopener noreferrer" class="clink">
         <div class="clink-left">
           <span class="clink-type">X / Twitter</span>
           <span class="clink-value">@choromba</span>
@@ -751,7 +759,7 @@ footer {
           <span class="clink-type">Location</span>
           <span class="clink-value">Vereeniging, South Africa</span>
         </div>
-        <span class="clink-arrow" style="opacity:0.15">◎</span>
+        <span class="clink-arrow  clink-arrow-static">◎</span>
       </div>
     </div>
   </div>
