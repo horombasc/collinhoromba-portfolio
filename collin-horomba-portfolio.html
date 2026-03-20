@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collin Horomba — Graphic Design</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --white: #fafaf8;
+  --surface: #f3f1ec;
+  --text: #1a1916;
+  --muted: #78756c;
+  --faint: #c8c4bb;
+  --line: #e4e0d8;
+  --gold: #b8924a;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--white);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 200;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.25rem;
+  height: 60px;
+  background: rgba(250,250,248,0.96);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.nav-brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--text);
+  text-decoration: none;
+  z-index: 201;
+}
+
+/* hamburger button */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 201;
+  position: relative;
+}
+.hamburger span {
+  display: block;
+  height: 1.5px;
+  background: var(--text);
+  border-radius: 2px;
+  transform-origin: center;
+  transition: transform 0.35s ease, opacity 0.25s ease, width 0.3s ease;
+}
+.hamburger span:nth-child(1) { width: 100%; }
+.hamburger span:nth-child(2) { width: 70%; margin-left: auto; }
+.hamburger span:nth-child(3) { width: 100%; }
+
+/* open state */
+.hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); width: 100%; }
+.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* mobile drawer */
+.nav-drawer {
+  position: fixed;
+  inset: 60px 0 0 0;
+  z-index: 199;
+  background: rgba(250,250,248,0.98);
+  backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+.nav-drawer.open {
+  transform: translateX(0);
+  pointer-events: all;
+}
+.nav-drawer a {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.8rem;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  text-decoration: none;
+  padding: 0.75rem 2rem;
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+  transition: color 0.25s, padding-left 0.3s;
+  opacity: 0;
+  transform: translateX(30px);
+  transition: opacity 0.4s ease, transform 0.4s ease, color 0.25s, padding-left 0.3s;
+}
+.nav-drawer a:first-child { border-top: 1px solid var(--line); }
+.nav-drawer a:hover { color: var(--gold); }
+.nav-drawer.open a {
+  opacity: 1;
+  transform: translateX(0);
+}
+.nav-drawer.open a:nth-child(1) { transition-delay: 0.08s; }
+.nav-drawer.open a:nth-child(2) { transition-delay: 0.14s; }
+.nav-drawer.open a:nth-child(3) { transition-delay: 0.20s; }
+.nav-drawer.open a:nth-child(4) { transition-delay: 0.26s; }
+
+.drawer-footer {
+  position: absolute;
+  bottom: 2rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+  opacity: 0;
+  transition: opacity 0.4s ease 0.35s;
+}
+.nav-drawer.open .drawer-footer { opacity: 1; }
+
+/* hide hamburger on desktop, show desktop links */
+.nav-desktop { display: none; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 1.25rem 4rem;
+  position: relative;
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+  padding-top: 60px;
+}
+.hero-bg-number {
+  position: absolute;
+  right: -0.05em;
+  bottom: -0.1em;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(140px, 38vw, 380px);
+  font-weight: 300;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--line);
+  user-select: none;
+  pointer-events: none;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.hero-label {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+.hero-label::before {
+  content: '';
+  display: block;
+  width: 1.5rem;
+  height: 1px;
+  background: var(--gold);
+}
+.hero-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3.8rem, 16vw, 7.5rem);
+  font-weight: 300;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.75rem;
+}
+.hero-name em { font-style: italic; display: block; }
+.hero-tagline {
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.75;
+  max-width: 28rem;
+  margin-bottom: 2rem;
+}
+.hero-scroll {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--faint);
+  width: fit-content;
+  transition: color 0.3s;
+}
+.hero-scroll:hover { color: var(--muted); }
+.hero-scroll-line {
+  width: 2.5rem;
+  height: 1px;
+  background: currentColor;
+  animation: linepulse 2s ease-in-out infinite;
+}
+@keyframes linepulse {
+  0%, 100% { opacity: 0.3; transform: scaleX(1); }
+  50% { opacity: 1; transform: scaleX(0.6); }
+}
+.hero-scroll span {
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* ── SHARED SECTION ── */
+.section-wrap {
+  padding: 4.5rem 1.25rem;
+  border-top: 1px solid var(--line);
+}
+.sec-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+.sec-eyebrow::before {
+  content: '';
+  width: 1.25rem;
+  height: 1px;
+  background: var(--gold);
+}
+.sec-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.85rem, 6vw, 2.8rem);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+
+/* ── ABOUT ── */
+.about-text {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+.about-text p {
+  font-size: 0.92rem;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.9;
+}
+.about-details { margin-top: 2rem; }
+.drow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--line);
+  gap: 1rem;
+}
+.drow:first-child { border-top: 1px solid var(--line); }
+.dkey {
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.dval { font-size: 0.87rem; font-weight: 300; color: var(--text); text-align: right; }
+
+/* ── WORK ── */
+.work-bg { background: var(--surface); }
+.work-img-frame {
+  margin-top: 2rem;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  line-height: 0;
+  position: relative;
+}
+.work-img {
+  width: 100%;
+  display: block;
+  filter: saturate(0.82);
+  transition: transform 0.6s ease, filter 0.6s ease;
+}
+.work-img-frame:hover .work-img { transform: scale(1.03); filter: saturate(1); }
+.work-tag {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(184,146,74,0.3);
+  padding: 0.3rem 0.85rem;
+  margin-top: 1.75rem;
+  margin-bottom: 1rem;
+}
+.work-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.75rem;
+  font-weight: 300;
+  line-height: 1.1;
+  margin-bottom: 0.9rem;
+}
+.work-desc {
+  font-size: 0.87rem;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.85;
+  margin-bottom: 1.5rem;
+}
+.work-meta { display: flex; flex-direction: column; }
+
+/* ── SKILLS ── */
+.skills-intro {
+  margin-top: 1.5rem;
+  font-size: 0.88rem;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.85;
+  margin-bottom: 2rem;
+}
+.skills-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.skill-item {
+  padding: 1.4rem;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  transition: background 0.3s;
+}
+.skill-item:nth-child(2n) { border-right: none; }
+.skill-item:nth-child(3),
+.skill-item:nth-child(4) { border-bottom: none; }
+.skill-item:hover { background: var(--surface); }
+.skill-icon { font-size: 1.1rem; margin-bottom: 0.75rem; display: block; color: var(--gold); }
+.skill-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  margin-bottom: 0.35rem;
+}
+.skill-note { font-size: 0.75rem; font-weight: 300; color: var(--muted); line-height: 1.6; }
+.skill-bar-track {
+  margin-top: 0.9rem;
+  height: 1px;
+  background: var(--line);
+  position: relative;
+}
+.skill-bar-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--gold);
+  width: 0;
+  transition: width 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── CONTACT ── */
+.contact-bg {
+  background: var(--text);
+  color: rgba(250,250,248,0.85);
+}
+.contact-bg .sec-eyebrow { color: var(--gold); }
+.contact-bg .sec-eyebrow::before { background: var(--gold); }
+.contact-bg .sec-title { color: #fafaf8; }
+.contact-sub {
+  font-size: 0.88rem;
+  font-weight: 300;
+  color: rgba(250,250,248,0.4);
+  line-height: 1.75;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+.contact-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.6rem, 6vw, 2.4rem);
+  font-weight: 300;
+  line-height: 1.25;
+  color: #fafaf8;
+  margin-bottom: 2.5rem;
+}
+.contact-tagline em { font-style: italic; color: rgba(250,250,248,0.35); }
+.contact-list { display: flex; flex-direction: column; }
+.clink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  text-decoration: none;
+  color: rgba(250,250,248,0.85);
+  transition: padding-left 0.3s, color 0.25s;
+}
+.clink:first-child { border-top: 1px solid rgba(255,255,255,0.08); }
+.clink:hover { padding-left: 0.5rem; color: #fafaf8; }
+.clink-left { display: flex; flex-direction: column; gap: 0.2rem; }
+.clink-type {
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.clink-value { font-size: 0.88rem; font-weight: 300; }
+.clink-arrow {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.2);
+  transition: transform 0.3s, color 0.25s;
+  flex-shrink: 0;
+}
+.clink:hover .clink-arrow { transform: translateX(5px); color: var(--gold); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--text);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 1.5rem;
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.22);
+}
+
+/* ── REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.85s ease, transform 0.85s ease;
+}
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-d1 { transition-delay: 0.12s; }
+.reveal-d2 { transition-delay: 0.24s; }
+
+/* ── DESKTOP OVERRIDES (min-width: 860px) ── */
+@media (min-width: 860px) {
+  nav {
+    padding: 0 3.5rem;
+    height: 64px;
+  }
+  .hamburger { display: none; }
+  .nav-drawer { display: none; }
+  .nav-desktop {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  .nav-desktop a {
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    position: relative;
+    transition: color 0.25s;
+  }
+  .nav-desktop a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; left: 0; right: 100%;
+    height: 1px;
+    background: var(--gold);
+    transition: right 0.3s ease;
+  }
+  .nav-desktop a:hover { color: var(--text); }
+  .nav-desktop a:hover::after { right: 0; }
+
+  .hero {
+    padding: 0 3.5rem 5rem;
+    padding-top: 64px;
+  }
+  .hero-name { font-size: clamp(3.8rem, 8vw, 7.5rem); }
+  .hero-bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  .hero-scroll {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+  .hero-scroll-line {
+    width: 1px;
+    height: 3.5rem;
+    animation: scrollpulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollpulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(0.6); }
+  }
+  .hero-scroll span { writing-mode: vertical-rl; }
+
+  .section-wrap { padding: 6rem 3.5rem; max-width: 1080px; margin: 0 auto; }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    margin-top: 3rem;
+    align-items: start;
+  }
+  .about-text { margin-top: 0; }
+  .about-details { margin-top: 0; }
+
+  .work-layout {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 4.5rem;
+    align-items: start;
+    margin-top: 3rem;
+  }
+  .work-img-frame { margin-top: 0; }
+  .work-info-side { padding-top: 0.5rem; }
+  .work-tag { margin-top: 0; }
+
+  .skills-layout {
+    display: grid;
+    grid-template-columns: 1fr 2.5fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .skills-intro { margin-top: 0.5rem; margin-bottom: 0; }
+  .skills-grid-wrap { margin-top: 0; }
+
+  .contact-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .contact-sub { margin-bottom: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">Collin Horomba</a>
+
+  <!-- Mobile hamburger -->
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- Desktop nav -->
+  <ul class="nav-desktop">
+    <li><a href="#about">About</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- Mobile drawer -->
+<div class="nav-drawer" id="navDrawer">
+  <a href="#about" class="drawer-link">About</a>
+  <a href="#work" class="drawer-link">Work</a>
+  <a href="#skills" class="drawer-link">Skills</a>
+  <a href="#contact" class="drawer-link">Contact</a>
+  <span class="drawer-footer">Graphic Design Portfolio</span>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-number">CH</div>
+  <div class="reveal">
+    <p class="hero-label">Graphic Design Portfolio</p>
+    <h1 class="hero-name">
+      Collin
+      <em>Horomba</em>
+    </h1>
+    <div class="hero-bottom">
+      <p class="hero-tagline">Designing with intention — using typography, visual hierarchy, and composition to communicate stories that matter.</p>
+      <a class="hero-scroll" href="#about">
+        <div class="hero-scroll-line"></div>
+        <span>Scroll</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<div class="section-wrap" id="about">
+  <div class="reveal">
+    <p class="sec-eyebrow">01 — About</p>
+    <h2 class="sec-title">About Me</h2>
+  </div>
+  <!-- mobile stacked, desktop grid via .about-grid -->
+  <div class="about-grid">
+    <div class="about-text reveal reveal-d1">
+      <p>I'm Collin Horomba, a graphic design student based in Vereeniging, South Africa. My work focuses on meaningful visual communication — using design principles to tell stories, honour heritage, and create clarity.</p>
+      <p>I believe good design is never accidental. Every spacing decision, font choice, and colour contrast is an intentional act of communication.</p>
+    </div>
+    <div class="about-details reveal reveal-d2">
+      <div class="drow">
+        <span class="dkey">Name</span>
+        <span class="dval">Collin Horomba</span>
+      </div>
+      <div class="drow">
+        <span class="dkey">Location</span>
+        <span class="dval">Vereeniging, ZA</span>
+      </div>
+      <div class="drow">
+        <span class="dkey">Discipline</span>
+        <span class="dval">Graphic Design</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORK -->
+<div class="section-wrap work-bg" id="work">
+  <div class="reveal">
+    <p class="sec-eyebrow">02 — Work</p>
+    <h2 class="sec-title">My Work</h2>
+  </div>
+  <!-- desktop: .work-layout grid; mobile: stacked naturally -->
+  <div class="work-layout">
+    <div class="work-img-frame reveal reveal-d1">
+      <img src="SIMBA.png" alt="Heritage Postage Stamp — Simba Horomba" class="work-img">
+    </div>
+    <div class="work-info-side reveal reveal-d2">
+      <span class="work-tag">Heritage Design · Print</span>
+      <h3 class="work-title">Heritage Postage Stamp</h3>
+      <p class="work-desc">A commemorative postage stamp dedicated to Simba Horomba — my mentor and brother. Designed to honour his life and Zimbabwean heritage through typography, imagery, and intentional composition.</p>
+      <div class="work-meta">
+        <div class="drow">
+          <span class="dkey">Type</span>
+          <span class="dval">Print Design</span>
+        </div>
+        <div class="drow">
+          <span class="dkey">Tools</span>
+          <span class="dval">Canva</span>
+        </div>
+        <div class="drow">
+          <span class="dkey">Country</span>
+          <span class="dval">Zimbabwe</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<div class="section-wrap" id="skills">
+  <div class="reveal">
+    <p class="sec-eyebrow">03 — Skills</p>
+    <h2 class="sec-title">Skills &amp; Expertise</h2>
+  </div>
+  <div class="skills-layout">
+    <div class="reveal reveal-d1">
+      <p class="skills-intro">A focused set of design skills built through hands-on projects and a commitment to intentional, purposeful communication.</p>
+    </div>
+    <div class="skills-grid-wrap reveal reveal-d2">
+      <div class="skills-grid">
+        <div class="skill-item">
+          <span class="skill-icon">◈</span>
+          <p class="skill-name">Visual Hierarchy</p>
+          <p class="skill-note">Guiding the eye through intentional size, contrast, and composition.</p>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-width="88%"></div></div>
+        </div>
+        <div class="skill-item">
+          <span class="skill-icon">Aa</span>
+          <p class="skill-name">Typography</p>
+          <p class="skill-note">Pairing typefaces and managing spacing to reinforce meaning.</p>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-width="82%"></div></div>
+        </div>
+        <div class="skill-item">
+          <span class="skill-icon">⬡</span>
+          <p class="skill-name">Canva / Photoshop</p>
+          <p class="skill-note">Digital tools for layout, editing, and print-ready artwork.</p>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-width="78%"></div></div>
+        </div>
+        <div class="skill-item">
+          <span class="skill-icon">◎</span>
+          <p class="skill-name">Branding &amp; Identity</p>
+          <p class="skill-note">Cohesive visual languages that communicate a distinct identity.</p>
+          <div class="skill-bar-track"><div class="skill-bar-fill" data-width="74%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="section-wrap contact-bg" id="contact">
+  <div class="reveal">
+    <p class="sec-eyebrow">04 — Contact</p>
+    <h2 class="sec-title">Let's Connect</h2>
+    <p class="contact-sub">Open to creative collaborations, feedback, and new opportunities.</p>
+  </div>
+  <div class="contact-layout">
+    <div class="contact-tagline reveal reveal-d1">
+      Get in touch<br>
+      <em>and create together</em>
+    </div>
+    <div class="contact-list reveal reveal-d2">
+      <a href="mailto:collinhoromba@gmail.com" class="clink">
+        <div class="clink-left">
+          <span class="clink-type">Email</span>
+          <span class="clink-value">collinhoromba@gmail.com</span>
+        </div>
+        <span class="clink-arrow">→</span>
+      </a>
+      <a href="https://x.com/choromba" target="_blank" class="clink">
+        <div class="clink-left">
+          <span class="clink-type">X / Twitter</span>
+          <span class="clink-value">@choromba</span>
+        </div>
+        <span class="clink-arrow">→</span>
+      </a>
+      <div class="clink">
+        <div class="clink-left">
+          <span class="clink-type">Location</span>
+          <span class="clink-value">Vereeniging, South Africa</span>
+        </div>
+        <span class="clink-arrow" style="opacity:0.15">◎</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>&#169; 2026 Collin Horomba</footer>
+
+<script>
+  const btn = document.getElementById('hamburger');
+  const drawer = document.getElementById('navDrawer');
+
+  function toggleMenu(open) {
+    btn.classList.toggle('open', open);
+    drawer.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  btn.addEventListener('click', function() {
+    toggleMenu(!drawer.classList.contains('open'));
+  });
+
+  drawer.querySelectorAll('a').forEach(function(link) {
+    link.addEventListener('click', function() {
+      toggleMenu(false);
+    });
+  });
+
+  // close on escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') toggleMenu(false);
+  });
+
+  // scroll reveal
+  const io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        e.target.querySelectorAll('.skill-bar-fill').forEach(function(b) {
+          b.style.width = b.getAttribute('data-width');
+        });
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+</script>
+</body>
+</html>
